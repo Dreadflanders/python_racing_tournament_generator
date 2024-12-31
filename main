@@ -1,0 +1,74 @@
+
+import random
+
+number_of_racers = 0
+racers = []
+races_per_player = 0
+participants_per_race = 0
+final_race_participants = 0
+racer_dict = {}
+races_needed = 0
+
+def matchups():
+    print("input number of racers")
+    number_of_racers = int(input())
+
+    for i in range(1,number_of_racers+1):
+        if i < 10:
+            racers.append(str("Player ")+"0"+str(i))
+        else:
+            racers.append(str("Player ") + str(i))
+    print("your racers are")
+    print(racers)
+
+    print("input races_per_player")
+    races_per_player = int(input())
+
+    print("how many people per race?")
+    participants_per_race = int(input())
+    print("let's figure this out")
+
+    races_needed = int(round((number_of_racers*races_per_player)/participants_per_race,0))
+
+    for g in racers:
+        racer_dict[g] = races_per_player
+
+    print("we need a total of " + str(races_needed) + " races to make sure everyone gets to race " + str(races_per_player) + " times")
+    # print(str(racer_dict) + "-----------" + str(sum(racer_dict.values())))
+    for r in range(1,races_needed+1):
+        # print("for race number "+str(r))
+        participants_temp = []
+
+        if sum(racer_dict.values()) < participants_per_race and sum(racer_dict.values()) > 0:
+            # print("--------------remainder detected!------------")
+            for z in racer_dict:
+                if racer_dict[z] > 0:
+                    participants_temp.append(z)
+                    racer_dict[z] -= 1
+            participants_temp.sort()
+            print(str(participants_temp) + " we have our racers for race number " + str(r) + "!")
+            break
+
+
+        while len(participants_temp)<participants_per_race and sum(racer_dict.values())>=participants_per_race:
+            # print(str(sum(racer_dict.values())) + " races left to allot")
+            new_racer = racers[random.randint(0,len(racers)-1)]
+            # print("racer on deck is " + new_racer)
+            # print(racer_dict[new_racer])
+            if racer_dict[new_racer]>0 and new_racer not in participants_temp:
+                participants_temp.append(new_racer)
+                racer_dict[new_racer] -=1
+                # print("added " + new_racer + " to race number " + str(r))
+            if new_racer in participants_temp:
+                # print("we already picked " + new_racer + " for this race")
+                continue
+        participants_temp.sort()
+        print(str(participants_temp) + " we have our racers for race number " + str(r) + "!")
+        participants_temp = []
+        # print(str(racer_dict)+"-----------" + str(sum(racer_dict.values())))
+    # print(sum(racer_dict.values()))
+
+
+
+
+matchups()
